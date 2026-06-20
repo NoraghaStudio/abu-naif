@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/webp" href="assets/images/efhashaa.webp">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -266,6 +267,215 @@
                     <img src="assets/images/mobily.webp" alt="شحن رصيد موبايلي">
                     <span>شحن رصيد موبايلي</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Sections -->
+    <style>
+        .reviews-section {
+            padding: 80px 0;
+            background: var(--bg-surface);
+        }
+        .reviews-section.alt-bg {
+            background: var(--bg-dark);
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .review-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .reviews-section.alt-bg .review-card {
+            background: var(--bg-card);
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .review-stars {
+            display: flex;
+            gap: 4px;
+            color: #fbbf24;
+        }
+        .review-source-img {
+            height: 24px;
+            border-radius: 4px;
+        }
+        .review-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-author {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .review-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+
+    <!-- Haraj Reviews Section -->
+    <section class="reviews-section" id="haraj-reviews">
+        <div class="container">
+            <div class="section-header">
+                <h2>آراء عملاء حراج</h2>
+                <p class="section-desc">شهادات نعتز بها من عملائنا في منصة حراج</p>
+            </div>
+            
+            <div class="reviews-grid">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <img src="assets/images/haraj.webp" alt="حراج" class="review-source-img">
+                    </div>
+                    <p class="review-text">"ممتاز ودقيق وصادق في التعامل ويتابعك وينصحك الي ابعد الحدود وانصح في التعامل معه ثقه جدا جدا"</p>
+                    <div class="review-footer">
+                        <span class="review-author">الابداع 88</span>
+                        <span class="review-date">2026/06/20</span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <img src="assets/images/haraj.webp" alt="حراج" class="review-source-img">
+                    </div>
+                    <p class="review-text">"انصحكم فيه سريع جدا ماشاءالله + يشرحلك التقرير +اذا فيه ملاحظات يذكرها تجربة ممتازة ومشكورين عالخدمة الراقيه❤"</p>
+                    <div class="review-footer">
+                        <span class="review-author">كن متفائل دائما</span>
+                        <span class="review-date">2026/06/17</span>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <img src="assets/images/haraj.webp" alt="حراج" class="review-source-img">
+                    </div>
+                    <p class="review-text">"ماشاء تبارك الله سرعه في الانجاز وحسن تعامل الموظف و الله يبارك لهم وانصح التعامل معهم"</p>
+                    <div class="review-footer">
+                        <span class="review-author">slamin</span>
+                        <span class="review-date">2026/06/10</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://haraj.com.sa/users/%D8%A7%D9%81%D8%AD%D8%B5%20%D9%87%D8%A7" target="_blank" class="cta-btn cta-secondary">قراءة المزيد من التقييمات في حراج</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Reviews Section -->
+    <section class="reviews-section alt-bg" id="other-reviews">
+        <div class="container">
+            <div class="section-header">
+                <h2>آراء عملاء الموقع</h2>
+                <p class="section-desc">آراء وتجارب عملائنا المباشرين</p>
+            </div>
+            
+            <div class="reviews-grid">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <p class="review-text">"خدمة سريعة جداً، حصلت على تقرير كارفكس لسيارتي الأمريكية مع شرح مفصل من المهندس قبل الشراء، أنقذني من سيارة غارقة! شكراً لكم."</p>
+                    <div class="review-footer">
+                        <span class="review-author">عبدالله الدوسري</span>
+                        <span class="review-date">2026/05/12</span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <p class="review-text">"طلبت تقرير موجز وصراحة دقة واحترافية، وفعلاً الشرح الصوتي المرفق يخليك تفهم التقرير حتى لو مالك خبرة بالسيارات."</p>
+                    <div class="review-footer">
+                        <span class="review-author">محمد السبيعي</span>
+                        <span class="review-date">2026/04/28</span>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-stars">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                    </div>
+                    <p class="review-text">"تعامل ممتاز، طلبت تقرير الإمارات وحصلت على كل تفاصيل الحوادث للسيارة قبل استيرادها للسعودية. يعطيكم العافية على الأمانة."</p>
+                    <div class="review-footer">
+                        <span class="review-author">سلطان المطيري</span>
+                        <span class="review-date">2026/04/05</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#contact" class="cta-btn cta-primary">شاركنا تجربتك معنا</a>
             </div>
         </div>
     </section>
