@@ -23,7 +23,7 @@
             --gold-hover: #1e40af;
             --text-primary: #0f172a;
             --text-secondary: #475569;
-            --border: rgba(30,58,138,0.2);
+            --border: rgba(30, 58, 138, 0.2);
             --danger: #ef4444;
         }
 
@@ -498,7 +498,7 @@
                     <p style="color: var(--text-secondary);">يمكنك تعديل أو حذف التقييمات المعروضة في الموقع.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn" onclick="addHarajReview()">إضافة تقييم من حراج</button>
+                    <button class="btn" onclick="addHarajReview()">أضف تقييم</button>
                     <button class="btn" onclick="copyReviewLink()">نسخ رابط التقييم للزبائن</button>
                 </div>
             </div>
@@ -549,6 +549,105 @@
         </section>
 
     </main>
+
+    <!-- Review Modal -->
+    <style>
+        .star-rating-btn {
+            font-size: 1.8rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+            user-select: none;
+        }
+
+        .star-rating-btn.active {
+            color: var(--gold, #d4af37);
+        }
+
+        .rating-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .rating-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+    <div id="reviewModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; padding: 20px; direction: rtl;">
+        <div style="background: var(--bg-surface, #1e1e1e); border: 2px solid var(--border); border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative;">
+            <button onclick="closeReviewModal()" style="position: absolute; top: 16px; left: 16px; background: none; border: none; color: var(--text-secondary); font-size: 2rem; cursor: pointer; line-height: 1;">&times;</button>
+
+            <h3 style="text-align: center; color: var(--gold, #d4af37); margin-bottom: 8px; font-size: 1.5rem;">أضف تقييم</h3>
+            <div style="text-align: center; margin-bottom: 24px;">
+                <label style="color: var(--text-primary); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <input type="checkbox" id="isHarajReviewCheckbox" checked style="width: 18px; height: 18px; accent-color: var(--gold);">
+                    هذا التقييم مستورد من موقع حراج
+                </label>
+            </div>
+
+            <form id="reviewForm" onsubmit="submitAdminReview(event)">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 600;">(الاسم أو الكنية/اللقب):</label>
+                    <input type="text" id="revName" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-family: inherit; transition: 0.2s;">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 600;">رقم الجوال (اختياري):</label>
+                    <input type="tel" id="revPhone" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-family: inherit; transition: 0.2s;">
+                </div>
+
+                <div class="rating-row">
+                    <label style="color: var(--text-primary); font-weight: 500;">1️⃣ الامانه .</label>
+                    <div id="star-amanah" data-val="5">
+                        <span class="star-rating-btn" onclick="setStar('amanah', 1)">★</span><span class="star-rating-btn" onclick="setStar('amanah', 2)">★</span><span class="star-rating-btn" onclick="setStar('amanah', 3)">★</span><span class="star-rating-btn" onclick="setStar('amanah', 4)">★</span><span class="star-rating-btn" onclick="setStar('amanah', 5)">★</span>
+                    </div>
+                </div>
+                <div class="rating-row">
+                    <label style="color: var(--text-primary); font-weight: 500;">2️⃣ السرعه.</label>
+                    <div id="star-speed" data-val="5">
+                        <span class="star-rating-btn" onclick="setStar('speed', 1)">★</span><span class="star-rating-btn" onclick="setStar('speed', 2)">★</span><span class="star-rating-btn" onclick="setStar('speed', 3)">★</span><span class="star-rating-btn" onclick="setStar('speed', 4)">★</span><span class="star-rating-btn" onclick="setStar('speed', 5)">★</span>
+                    </div>
+                </div>
+                <div class="rating-row">
+                    <label style="color: var(--text-primary); font-weight: 500;">3️⃣ الاحترافيه .</label>
+                    <div id="star-prof" data-val="5">
+                        <span class="star-rating-btn" onclick="setStar('prof', 1)">★</span><span class="star-rating-btn" onclick="setStar('prof', 2)">★</span><span class="star-rating-btn" onclick="setStar('prof', 3)">★</span><span class="star-rating-btn" onclick="setStar('prof', 4)">★</span><span class="star-rating-btn" onclick="setStar('prof', 5)">★</span>
+                    </div>
+                </div>
+                <div class="rating-row" style="margin-bottom: 24px;">
+                    <label style="color: var(--text-primary); font-weight: 500;">4️⃣ انصح بالتعامل معاهم.</label>
+                    <div id="star-rec" data-val="5">
+                        <span class="star-rating-btn" onclick="setStar('rec', 1)">★</span><span class="star-rating-btn" onclick="setStar('rec', 2)">★</span><span class="star-rating-btn" onclick="setStar('rec', 3)">★</span><span class="star-rating-btn" onclick="setStar('rec', 4)">★</span><span class="star-rating-btn" onclick="setStar('rec', 5)">★</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 600;">التقييم (اختياري):</label>
+                    <textarea id="revComment" rows="3" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-dark); color: var(--text-primary); font-family: inherit; resize: vertical; transition: 0.2s;"></textarea>
+                </div>
+
+                <button type="submit" id="submitReviewBtn" class="btn btn-primary" style="width: 100%; border: none; cursor: pointer; justify-content: center; font-size: 1.1rem; padding: 12px;">إضافة التقييم</button>
+            </form>
+            
+            <div id="reviewFeedback" style="display: none; text-align: center; margin-top: 15px; font-weight: 600;"></div>
+
+            <div id="reviewSuccessMessage" style="display: none; text-align: center; padding: 2rem 0;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #d4af37)" stroke-width="2" style="margin-bottom: 1rem;">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <h3 style="color: var(--gold, #d4af37); font-size: 1.5rem; margin-bottom: 1rem;">تمت الإضافة!</h3>
+            </div>
+        </div>
+    </div>
 
 
     <script>
@@ -757,6 +856,9 @@
         }
 
         // --- Reviews Logic ---
+        let harajDisplayLimit = 10;
+        let localDisplayLimit = 10;
+
         async function loadReviews() {
             try {
                 const res = await databases.listDocuments(DB_ID, COL_ID, [
@@ -796,9 +898,16 @@
                 if (localReviewsList.length === 0) {
                     localContainer.innerHTML = '<p style="color: var(--text-secondary);">لا توجد تقييمات من خارج حراج حالياً.</p>';
                 } else {
-                    localReviewsList.forEach(r => {
+                    localReviewsList.slice(0, localDisplayLimit).forEach(r => {
                         localContainer.innerHTML += generateAdminReviewHTML(r);
                     });
+                    
+                    if (localReviewsList.length > localDisplayLimit) {
+                        localContainer.innerHTML += `
+                            <button class="btn" style="width: 100%; margin-top: 1rem; border: 1px solid var(--gold); background: transparent; color: var(--gold);" 
+                                onclick="localDisplayLimit += 10; renderReviews(allReviews);">عرض المزيد</button>
+                        `;
+                    }
                 }
             }
 
@@ -806,9 +915,16 @@
                 if (harajReviews.length === 0) {
                     harajContainer.innerHTML = '<p style="color: var(--text-secondary);">لا توجد تقييمات من موقع حراج.</p>';
                 } else {
-                    harajReviews.forEach(r => {
+                    harajReviews.slice(0, harajDisplayLimit).forEach(r => {
                         harajContainer.innerHTML += generateAdminReviewHTML(r);
                     });
+                    
+                    if (harajReviews.length > harajDisplayLimit) {
+                        harajContainer.innerHTML += `
+                            <button class="btn" style="width: 100%; margin-top: 1rem; border: 1px solid var(--gold); background: transparent; color: var(--gold);" 
+                                onclick="harajDisplayLimit += 10; renderReviews(allReviews);">عرض المزيد</button>
+                        `;
+                    }
                 }
             }
         }
@@ -944,11 +1060,45 @@
             btn.disabled = false;
         }
 
-        async function addHarajReview() {
-            const name = prompt("اسم العميل:");
-            if (!name) return;
-            const text = prompt("التقييم:");
-            if (!text) return;
+        function addHarajReview() {
+            document.getElementById('reviewForm').reset();
+            document.querySelectorAll('.star-rating-btn').forEach(btn => btn.classList.add('active'));
+            document.getElementById('reviewForm').style.display = 'block';
+            const successMsg = document.getElementById('reviewSuccessMessage');
+            if (successMsg) successMsg.style.display = 'none';
+            const fb = document.getElementById('reviewFeedback');
+            if(fb) fb.style.display = 'none';
+            document.getElementById('reviewModal').style.display = 'flex';
+        }
+        
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+        }
+        
+        function setStar(group, val) {
+            const container = document.getElementById('star-' + group);
+            if(!container) return;
+            container.setAttribute('data-val', val);
+            const stars = container.querySelectorAll('.star-rating-btn');
+            stars.forEach((s, i) => {
+                if (i < val) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+        // Initialize stars
+        ['amanah', 'speed', 'prof', 'rec'].forEach(g => setStar(g, 5));
+
+        async function submitAdminReview(event) {
+            event.preventDefault();
+            const name = document.getElementById('revName').value.trim();
+            const phone = document.getElementById('revPhone').value.trim();
+            const text = document.getElementById('revComment').value.trim();
+            const btn = document.getElementById('submitReviewBtn');
+            const feedback = document.getElementById('reviewFeedback');
+
+            btn.disabled = true;
+            btn.innerText = "جاري الإضافة...";
+            if (feedback) feedback.style.display = 'none';
 
             const today = new Date();
             const yyyy = today.getFullYear();
@@ -958,16 +1108,30 @@
             try {
                 await databases.createDocument(DB_ID, COL_ID, ID.unique(), {
                     name: name,
+                    phone: phone,
                     date: yyyy + '/' + mm + '/' + dd,
-                    text: text,
-                    isHaraj: true
+                    text: text || 'تم التقييم بنجاح',
+                    isHaraj: document.getElementById('isHarajReviewCheckbox').checked
                 });
-                alert("تم الإضافة بنجاح!");
+                
+                document.getElementById('reviewForm').style.display = 'none';
+                const successMsg = document.getElementById('reviewSuccessMessage');
+                if (successMsg) successMsg.style.display = 'block';
+
                 await loadReviews();
+                setTimeout(() => {
+                    closeReviewModal();
+                }, 2000);
             } catch (e) {
-                alert("حدث خطأ أثناء الإضافة.");
                 console.error(e);
+                if (feedback) {
+                    feedback.textContent = "حدث خطأ أثناء الإضافة.";
+                    feedback.style.color = "red";
+                    feedback.style.display = 'block';
+                }
             }
+            btn.disabled = false;
+            btn.innerText = "إضافة التقييم";
         }
 
         function changePassword() {
