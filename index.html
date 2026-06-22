@@ -22,12 +22,10 @@
         style="background: #be1e2d; border-bottom: 1px solid var(--border);">
         <div class="container header-inner">
             <div class="logo-area">
-                <img src="assets/images/logo-ar.webp" alt="شعار" style="height: 40px; border-radius: 8px;">
                 <span class="logo-text"
                     style="font-weight: 700; color: #ffffff; font-size: 1.15rem; font-family: 'IBM Plex Sans Arabic', sans-serif; margin: 0 10px; white-space: nowrap;">
                     <span style="color: #ffffff;">أبو نايف لفحص السيارات</span>
                 </span>
-                <img src="assets/images/logo-en.webp" alt="Logo" style="height: 40px; border-radius: 8px;">
             </div>
             <a href="https://wa.me/966598830561" class="cta-btn header-cta" dir="ltr" target="_blank" style="color: #ffffff;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -398,8 +396,23 @@
                 document.addEventListener('DOMContentLoaded', async () => {
                     let reviews = [];
                     try {
-                        const res = await fetch('reviews.json');
-                        reviews = await res.json();
+                        const jsonRes = await fetch('reviews.json');
+                        const oldReviews = await jsonRes.json();
+                        
+                        // Default Worker URL (Update this when you deploy your Cloudflare worker)
+                        const workerUrl = 'https://abu-naif-reviews.your-domain.workers.dev/api/reviews';
+                        let newReviews = [];
+                        try {
+                            const apiRes = await fetch(workerUrl);
+                            if (apiRes.ok) {
+                                newReviews = await apiRes.json();
+                            }
+                        } catch (apiError) {
+                            // Silently ignore if worker is not yet deployed
+                            console.warn('Worker not deployed yet, showing old reviews only.');
+                        }
+                        
+                        reviews = [...newReviews, ...oldReviews];
                     } catch (e) {
                         console.error('Failed to load reviews', e);
                     }
@@ -409,7 +422,7 @@
                     const loadMoreBtn = document.getElementById('load-more-reviews');
                     const loadMoreOtherBtn = document.getElementById('load-more-other-reviews');
                     
-                    let harajReviews = reviews.filter(r => r.isHaraj !== false);
+                    let harajReviews = reviews.filter(r => r.isHaraj !== false).slice(0, 200);
                     let localReviews = reviews.filter(r => r.isHaraj === false);
 
                     let harajCurrentIndex = 0;
@@ -471,7 +484,7 @@
                                     ${starsSvg}
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <div style="font-weight: bold; color: var(--gold); font-size: 0.9rem;">
-                                            التقييم رقم ${(173 + harajReviews.length) - (startIndex + i)}
+                                            التقييم رقم ${harajReviews.length - (startIndex + i)}
                                         </div>
                                         <img src="assets/images/haraj.webp" alt="حراج" class="review-source-img">
                                     </div>
@@ -897,19 +910,24 @@
             // Or just save normally since backend is minimal.
             
             try {
-                const { Client, Databases, ID } = Appwrite;
-                const client = new Client()
-                    .setEndpoint('https://fra.cloud.appwrite.io/v1')
-                    .setProject('6a36c593002500c98660');
-                const databases = new Databases(client);
-
-                await databases.createDocument('6a36cb6c0009fc808a1f', 'reviews', ID.unique(), {
-                    name: name,
-                    phone: phone,
-                    text: text || 'تم التقييم بنجاح',
-                    date: yyyy + '/' + mm + '/' + dd,
-                    isHaraj: false
+                // Default Worker URL (Update this when you deploy your Cloudflare worker)
+                const workerUrl = 'https://abu-naif-reviews.your-domain.workers.dev/api/reviews';
+                
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        text: text || 'تم التقييم بنجاح',
+                        date: yyyy + '/' + mm + '/' + dd,
+                        isHaraj: false
+                    })
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
                 document.getElementById('reviewForm').style.display = 'none';
                 const successMsg = document.getElementById('reviewSuccessMessage');

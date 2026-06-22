@@ -2,11 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <script>
-        if (window.location.hostname === 'abu-rayan.com' || window.location.hostname === 'www.abu-rayan.com') {
-            window.location.replace('https://admin.abu-rayan.com/');
-        }
-    </script>
+    <!-- No redirect for abu-naif -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم أبو نايف لفحص السيارات</title>
@@ -19,11 +15,11 @@
             --bg-dark: #f8fafc;
             --bg-surface: #ffffff;
             --bg-hover: #f1f5f9;
-            --gold: #1e3a8a;
-            --gold-hover: #1e40af;
+            --gold: #be1e2d;
+            --gold-hover: #9b1925;
             --text-primary: #0f172a;
             --text-secondary: #475569;
-            --border: rgba(30, 58, 138, 0.2);
+            --border: rgba(190, 30, 45, 0.2);
             --danger: #ef4444;
         }
 
@@ -402,15 +398,9 @@
         }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
     <script>
-        const { Client, Databases, ID, Query } = Appwrite;
-        const appwriteClient = new Client()
-            .setEndpoint('https://fra.cloud.appwrite.io/v1')
-            .setProject('6a36c593002500c98660');
-        const databases = new Databases(appwriteClient);
-        const DB_ID = '6a36cb6c0009fc808a1f';
-        const COL_ID = 'reviews';
+        // Update this to your deployed worker URL
+        const workerUrl = 'https://abu-naif-reviews.your-domain.workers.dev/api/reviews';
     </script>
 </head>
 
@@ -895,13 +885,12 @@
 
         async function loadReviews() {
             try {
-                const res = await databases.listDocuments(DB_ID, COL_ID, [
-                    Query.limit(500),
-                    Query.orderDesc('$createdAt')
-                ]);
+                const res = await fetch(workerUrl);
+                if (!res.ok) throw new Error('Network response was not ok');
+                const documents = await res.json();
 
-                allReviews = res.documents.map(doc => ({
-                    id: doc.$id,
+                allReviews = documents.map(doc => ({
+                    id: doc.id,
                     name: doc.name,
                     text: doc.text,
                     date: doc.date,
@@ -912,7 +901,7 @@
             } catch (e) {
                 console.error("Error loading reviews", e);
                 const harajContainer = document.getElementById('harajReviewsContainer');
-                if (harajContainer) harajContainer.innerHTML = '<p style="color: var(--danger);">حدث خطأ أثناء تحميل التقييمات من Appwrite.</p>';
+                if (harajContainer) harajContainer.innerHTML = '<p style="color: var(--danger);">حدث خطأ أثناء تحميل التقييمات. تأكد من نشر Cloudflare Worker.</p>';
             }
         }
 
@@ -1058,11 +1047,16 @@
             btn.disabled = true;
 
             try {
-                await databases.updateDocument(DB_ID, COL_ID, id, {
-                    name: newName,
-                    text: newText,
-                    isHaraj: newIsHaraj
+                const res = await fetch(`${workerUrl}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: newName,
+                        text: newText,
+                        isHaraj: newIsHaraj
+                    })
                 });
+                if (!res.ok) throw new Error('Update failed');
                 alert('تم حفظ التعديلات بنجاح!');
                 await loadReviews();
             } catch (e) {
@@ -1083,7 +1077,8 @@
             btn.disabled = true;
 
             try {
-                await databases.deleteDocument(DB_ID, COL_ID, id);
+                const res = await fetch(`${workerUrl}/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
                 await loadReviews();
             } catch (e) {
                 alert("حدث خطأ أثناء الحذف.");
@@ -1140,13 +1135,19 @@
             const dd = String(today.getDate()).padStart(2, '0');
 
             try {
-                await databases.createDocument(DB_ID, COL_ID, ID.unique(), {
-                    name: name,
-                    phone: phone,
-                    date: yyyy + '/' + mm + '/' + dd,
-                    text: text || 'تم التقييم بنجاح',
-                    isHaraj: document.getElementById('isHarajReviewCheckbox').checked
+                const res = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        date: yyyy + '/' + mm + '/' + dd,
+                        text: text || 'تم التقييم بنجاح',
+                        isHaraj: document.getElementById('isHarajReviewCheckbox').checked
+                    })
                 });
+                
+                if (!res.ok) throw new Error('Failed to create');
 
                 document.getElementById('reviewForm').style.display = 'none';
                 const successMsg = document.getElementById('reviewSuccessMessage');
