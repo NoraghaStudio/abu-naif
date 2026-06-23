@@ -5,7 +5,7 @@
     <!-- No redirect for abu-naif -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم أبو نايف لفحص السيارات</title>
+    <title>نظام إدارة أبو نايف لتقارير المركبات</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
@@ -15,11 +15,11 @@
             --bg-dark: #f8fafc;
             --bg-surface: #ffffff;
             --bg-hover: #f1f5f9;
-            --gold: #be1e2d;
-            --gold-hover: #9b1925;
+            --gold: #2563eb;
+            --gold-hover: #1d4ed8;
             --text-primary: #0f172a;
             --text-secondary: #475569;
-            --border: rgba(190, 30, 45, 0.2);
+            --border: rgba(37, 99, 235, 0.2);
             --danger: #ef4444;
         }
 
@@ -411,13 +411,13 @@
     <aside class="sidebar">
         <div class="logo" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
             <img src="assets/images/NewLogo.jpeg" alt="أبو نايف لفحص السيارات" style="height: 32px; border-radius: 4px;">
-            لوحة التحكم
+            مركز التحكم
         </div>
         <div class="nav-item active" onclick="switchTab('reviews')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1-2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
-            إدارة التقييمات
+            التحكم بالآراء
         </div>
 
         <div style="margin-top: auto;">
@@ -431,23 +431,23 @@
         <section id="reviews" class="section active">
             <div class="header">
                 <div>
-                    <h1>إدارة التقييمات</h1>
-                    <p style="color: var(--text-secondary);">يمكنك تعديل أو حذف التقييمات المعروضة في الموقع.</p>
+                    <h1>التحكم بالآراء</h1>
+                    <p style="color: var(--text-secondary);">إدارة ومراجعة آراء العملاء المعروضة على المنصة بسهولة.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn" onclick="addHarajReview()">أضف تقييم</button>
-                    <button class="btn" onclick="copyReviewLink()">نسخ رابط التقييم للزبائن</button>
+                    <button class="btn" onclick="addHarajReview()">إدراج تقييم جديد</button>
+                    <button class="btn" onclick="copyReviewLink()">مشاركة رابط التقييم</button>
                 </div>
             </div>
 
-            <h2 style="color: var(--gold); margin-bottom: 1rem; margin-top: 1rem;">تقييمات عملائنا (خارج حراج)</h2>
+            <h2 style="color: var(--gold); margin-bottom: 1rem; margin-top: 1rem;">آراء العملاء (المنصة المباشرة)</h2>
             <div class="reviews-list" id="localReviewsContainer" style="margin-bottom: 3rem;">
-                <p style="color: var(--text-secondary);">لا توجد تقييمات من خارج حراج حالياً.</p>
+                <p style="color: var(--text-secondary);">لم يتم تسجيل آراء عبر المنصة المباشرة بعد.</p>
             </div>
 
-            <h2 style="color: var(--gold); margin-bottom: 1rem;">تقييمات موقع حراج</h2>
+            <h2 style="color: var(--gold); margin-bottom: 1rem;">آراء منصة حراج</h2>
             <div class="reviews-list" id="harajReviewsContainer">
-                <p style="color: var(--text-secondary);">جاري التحميل...</p>
+                <p style="color: var(--text-secondary);">يتم جلب البيانات الآن...</p>
             </div>
         </section>
 
@@ -501,7 +501,7 @@
                     style="color: var(--text-primary); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <input type="checkbox" id="isHarajReviewCheckbox" checked
                         style="width: 18px; height: 18px; accent-color: var(--gold);">
-                    هذا التقييم مستورد من موقع حراج
+                    هذا الرأي قادم من منصة حراج
                 </label>
             </div>
 
@@ -583,7 +583,7 @@
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
-                <h3 style="color: var(--gold, #d4af37); font-size: 1.5rem; margin-bottom: 1rem;">تمت الإضافة!</h3>
+                <h3 style="color: var(--gold, #d4af37); font-size: 1.5rem; margin-bottom: 1rem;">نجحت العملية!</h3>
             </div>
         </div>
     </div>
@@ -614,8 +614,8 @@
 
         function copyReviewLink() {
             let reviewUrl = 'https://abu-naif.com/?review=true';
-            navigator.clipboard.writeText('تفضل بتقييم خدمتنا من خلال الرابط\n' + reviewUrl).then(() => {
-                alert('تم نسخ رابط التقييم الخاص بنجاح!');
+            navigator.clipboard.writeText('نسعد بمشاركتك تجربتك معنا عبر الرابط التالي\n' + reviewUrl).then(() => {
+                alert('تم حفظ رابط التقييم في الحافظة بنجاح!');
             });
         }
 
@@ -663,7 +663,7 @@
             } catch (e) {
                 console.error("Error loading reviews", e);
                 const harajContainer = document.getElementById('harajReviewsContainer');
-                if (harajContainer) harajContainer.innerHTML = '<p style="color: var(--danger);">حدث خطأ أثناء تحميل التقييمات. تأكد من نشر Cloudflare Worker.</p>';
+                if (harajContainer) harajContainer.innerHTML = '<p style="color: var(--danger);">عذراً، واجهنا مشكلة في استرداد الآراء. يرجى التحقق من حالة الخادم.</p>';
             }
         }
 
@@ -681,7 +681,7 @@
 
             if (localContainer) {
                 if (localReviewsList.length === 0) {
-                    localContainer.innerHTML = '<p style="color: var(--text-secondary);">لا توجد تقييمات من خارج حراج حالياً.</p>';
+                    localContainer.innerHTML = '<p style="color: var(--text-secondary);">لم يتم تسجيل آراء عبر المنصة المباشرة بعد.</p>';
                 } else {
                     localReviewsList.slice(0, localDisplayLimit).forEach(r => {
                         localContainer.innerHTML += generateAdminReviewHTML(r);
@@ -690,7 +690,7 @@
                     if (localReviewsList.length > localDisplayLimit) {
                         localContainer.innerHTML += `
                             <button class="btn" style="width: 100%; margin-top: 1rem; border: 1px solid var(--gold); background: transparent; color: var(--gold);" 
-                                onclick="localDisplayLimit += 10; renderReviews(allReviews);">عرض المزيد</button>
+                                onclick="localDisplayLimit += 10; renderReviews(allReviews);">إظهار المزيد من النتائج</button>
                         `;
                     }
                 }
@@ -698,7 +698,7 @@
 
             if (harajContainer) {
                 if (harajReviews.length === 0) {
-                    harajContainer.innerHTML = '<p style="color: var(--text-secondary);">لا توجد تقييمات من موقع حراج.</p>';
+                    harajContainer.innerHTML = '<p style="color: var(--text-secondary);">لا توجد آراء مسجلة من منصة حراج حالياً.</p>';
                 } else {
                     harajReviews.slice(0, harajDisplayLimit).forEach(r => {
                         harajContainer.innerHTML += generateAdminReviewHTML(r);
@@ -707,7 +707,7 @@
                     if (harajReviews.length > harajDisplayLimit) {
                         harajContainer.innerHTML += `
                             <button class="btn" style="width: 100%; margin-top: 1rem; border: 1px solid var(--gold); background: transparent; color: var(--gold);" 
-                                onclick="harajDisplayLimit += 10; renderReviews(allReviews);">عرض المزيد</button>
+                                onclick="harajDisplayLimit += 10; renderReviews(allReviews);">إظهار المزيد من النتائج</button>
                         `;
                     }
                 }
@@ -723,14 +723,14 @@
             if (!r.isStatic) {
                 actionsHtml = `
                     <div class="review-actions" style="margin-right: 1rem;">
-                        <button class="btn" style="padding: 0.5rem 1rem;" onclick="saveReview('${r.id}')">تحديث</button>
-                        <button class="btn btn-danger" style="padding: 0.5rem 1rem;" onclick="deleteReview('${r.id}', ${r.isLocal})">حذف</button>
+                        <button class="btn" style="padding: 0.5rem 1rem;" onclick="saveReview('${r.id}')">حفظ التعديلات</button>
+                        <button class="btn btn-danger" style="padding: 0.5rem 1rem;" onclick="deleteReview('${r.id}', ${r.isLocal})">إزالة</button>
                     </div>
                 `;
             } else {
                 actionsHtml = `
                     <div class="review-actions" style="margin-right: 1rem;">
-                        <span style="color: var(--text-secondary); font-size: 0.85rem; padding: 0.5rem;">تقييم قديم (للقراءة فقط)</span>
+                        <span style="color: var(--text-secondary); font-size: 0.85rem; padding: 0.5rem;">رأي مؤرشف (قراءة فقط)</span>
                     </div>
                 `;
             }
@@ -738,16 +738,16 @@
             return `
                 <div class="review-card" id="rev-card-${r.id}" style="${bg}" draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
                     <div class="review-header">
-                        <div style="cursor: grab; margin-left: 1rem; color: var(--text-secondary);" title="اسحب لترتيب التقييم">
+                        <div style="cursor: grab; margin-left: 1rem; color: var(--text-secondary);" title="اسحب لإعادة الترتيب">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                         </div>
                         <div style="flex:1;">
                             <input type="text" class="form-control review-name" id="name-${r.id}" value="${r.name}" ${readonlyAttr} style="background:transparent; border:none; border-bottom:1px solid var(--border); padding:0.5rem; margin-bottom:0.5rem; color:var(--gold); width:100%;">
-                            <div style="color:var(--text-secondary); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">${r.date} ${r.isLocal ? '(تقييم زائر)' : ''}</div>
-                            ${r.phone ? `<div style="color:var(--gold); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">📱 رقم الجوال: <a href="tel:${r.phone}" style="color:var(--gold); text-decoration:none;">${r.phone}</a></div>` : ''}
+                            <div style="color:var(--text-secondary); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">${r.date} ${r.isLocal ? '(رأي من زائر)' : ''}</div>
+                            ${r.phone ? `<div style="color:var(--gold); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">📱 الهاتف: <a href="tel:${r.phone}" style="color:var(--gold); text-decoration:none;">${r.phone}</a></div>` : ''}
                             <label style="display:flex; align-items:center; gap:0.5rem; color:var(--text-secondary); font-size:0.9rem; padding-right:0.5rem; cursor:${r.isStatic ? 'default' : 'pointer'};">
                                 <input type="checkbox" id="haraj-${r.id}" ${r.isHaraj !== false ? 'checked' : ''} ${disabledAttr}>
-                                تقييم من حراج
+                                مستورد من حراج
                             </label>
                         </div>
                         ${actionsHtml}
@@ -838,7 +838,7 @@
                 alert('تم حفظ التعديلات بنجاح!');
                 await loadReviews();
             } catch (e) {
-                alert("حدث خطأ أثناء التحديث.");
+                alert("حدث خطأ أثناء الحفظ التعديلات.");
                 console.error(e);
             }
 
@@ -847,11 +847,11 @@
         }
 
         async function deleteReview(id, isLocal) {
-            if (!confirm('هل أنت متأكد من حذف هذا التقييم؟')) return;
+            if (!confirm('هل أنت متأكد من إزالة هذا التقييم؟')) return;
 
             const btn = event.target;
             const originalText = btn.innerText;
-            btn.innerText = "جاري الحذف...";
+            btn.innerText = "جاري الإزالة...";
             btn.disabled = true;
 
             try {
@@ -859,7 +859,7 @@
                 if (!res.ok) throw new Error('Delete failed');
                 await loadReviews();
             } catch (e) {
-                alert("حدث خطأ أثناء الحذف.");
+                alert("حدث خطأ أثناء الإزالة.");
                 console.error(e);
             }
 
