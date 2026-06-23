@@ -742,7 +742,7 @@ h1 {
 }
 .ticker {
     display: flex;
-    animation: tickerMoveRTL 40s linear infinite;
+    animation: tickerMoveRTL 20s linear infinite;
 }
 .ticker-wrap:hover .ticker {
     animation-play-state: paused;
