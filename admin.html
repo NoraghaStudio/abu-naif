@@ -626,18 +626,37 @@
 
         async function loadReviews() {
             try {
-                const res = await fetch(workerUrl);
-                if (!res.ok) throw new Error('Network response was not ok');
-                const documents = await res.json();
+                let dbReviews = [];
+                try {
+                    const res = await fetch(workerUrl);
+                    if (res.ok) {
+                        dbReviews = await res.json();
+                    }
+                } catch (e) {
+                    console.warn("Could not load worker reviews", e);
+                }
 
-                allReviews = documents.map(doc => ({
-                    id: doc.id,
+                let jsonReviews = [];
+                try {
+                    const jsonRes = await fetch('reviews.json');
+                    if (jsonRes.ok) {
+                        jsonReviews = await jsonRes.json();
+                    }
+                } catch (e) {
+                    console.warn("Could not load reviews.json", e);
+                }
+
+                const mergedDocs = [...dbReviews, ...jsonReviews];
+
+                allReviews = mergedDocs.map((doc, index) => ({
+                    id: doc.id || generateId(doc.name || 'user', doc.text || String(index)),
                     name: doc.name,
                     text: doc.text,
                     date: doc.date,
                     isHaraj: doc.isHaraj !== false,
                     isLocal: doc.isHaraj === false,
-                    phone: doc.phone
+                    phone: doc.phone,
+                    isStatic: !doc.id // Flag to identify reviews from reviews.json
                 }));
 
                 renderReviews(allReviews);
@@ -697,6 +716,25 @@
 
         function generateAdminReviewHTML(r) {
             const bg = r.isHaraj === false ? 'background: #dcfce7;' : '';
+            const readonlyAttr = r.isStatic ? 'readonly' : '';
+            const disabledAttr = r.isStatic ? 'disabled' : '';
+            
+            let actionsHtml = '';
+            if (!r.isStatic) {
+                actionsHtml = `
+                    <div class="review-actions" style="margin-right: 1rem;">
+                        <button class="btn" style="padding: 0.5rem 1rem;" onclick="saveReview('${r.id}')">تحديث</button>
+                        <button class="btn btn-danger" style="padding: 0.5rem 1rem;" onclick="deleteReview('${r.id}', ${r.isLocal})">حذف</button>
+                    </div>
+                `;
+            } else {
+                actionsHtml = `
+                    <div class="review-actions" style="margin-right: 1rem;">
+                        <span style="color: var(--text-secondary); font-size: 0.85rem; padding: 0.5rem;">تقييم قديم (للقراءة فقط)</span>
+                    </div>
+                `;
+            }
+
             return `
                 <div class="review-card" id="rev-card-${r.id}" style="${bg}" draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="drop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
                     <div class="review-header">
@@ -704,20 +742,17 @@
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                         </div>
                         <div style="flex:1;">
-                            <input type="text" class="form-control review-name" id="name-${r.id}" value="${r.name}" style="background:transparent; border:none; border-bottom:1px solid var(--border); padding:0.5rem; margin-bottom:0.5rem; color:var(--gold); width:100%;">
+                            <input type="text" class="form-control review-name" id="name-${r.id}" value="${r.name}" ${readonlyAttr} style="background:transparent; border:none; border-bottom:1px solid var(--border); padding:0.5rem; margin-bottom:0.5rem; color:var(--gold); width:100%;">
                             <div style="color:var(--text-secondary); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">${r.date} ${r.isLocal ? '(تقييم زائر)' : ''}</div>
                             ${r.phone ? `<div style="color:var(--gold); font-size:0.85rem; margin-bottom: 0.5rem; padding-right: 0.5rem;">📱 رقم الجوال: <a href="tel:${r.phone}" style="color:var(--gold); text-decoration:none;">${r.phone}</a></div>` : ''}
-                            <label style="display:flex; align-items:center; gap:0.5rem; color:var(--text-secondary); font-size:0.9rem; padding-right:0.5rem; cursor:pointer;">
-                                <input type="checkbox" id="haraj-${r.id}" ${r.isHaraj !== false ? 'checked' : ''}>
+                            <label style="display:flex; align-items:center; gap:0.5rem; color:var(--text-secondary); font-size:0.9rem; padding-right:0.5rem; cursor:${r.isStatic ? 'default' : 'pointer'};">
+                                <input type="checkbox" id="haraj-${r.id}" ${r.isHaraj !== false ? 'checked' : ''} ${disabledAttr}>
                                 تقييم من حراج
                             </label>
                         </div>
-                        <div class="review-actions" style="margin-right: 1rem;">
-                            <button class="btn" style="padding: 0.5rem 1rem;" onclick="saveReview('${r.id}')">تحديث</button>
-                            <button class="btn btn-danger" style="padding: 0.5rem 1rem;" onclick="deleteReview('${r.id}', ${r.isLocal})">حذف</button>
-                        </div>
+                        ${actionsHtml}
                     </div>
-                    <textarea class="form-control" id="text-${r.id}" style="min-height:80px;">${r.text}</textarea>
+                    <textarea class="form-control" id="text-${r.id}" ${readonlyAttr} style="min-height:80px;">${r.text}</textarea>
                 </div>
             `;
         }
