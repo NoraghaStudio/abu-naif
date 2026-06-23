@@ -613,13 +613,7 @@
 
 
         function copyReviewLink() {
-            let reviewUrl;
-            if (window.location.href.includes('admin.html')) {
-                reviewUrl = window.location.href.replace('admin.html', 'index.html').split('?')[0] + '?review=true';
-            } else {
-                // For Cloudflare Pages where the URL is just /admin
-                reviewUrl = window.location.origin + '/?review=true';
-            }
+            let reviewUrl = 'https://abu-naif.com/?review=true';
             navigator.clipboard.writeText('تفضل بتقييم خدمتنا من خلال الرابط\n' + reviewUrl).then(() => {
                 alert('تم نسخ رابط التقييم الخاص بنجاح!');
             });
@@ -628,6 +622,7 @@
         // --- Reviews Logic ---
         let harajDisplayLimit = 10;
         let localDisplayLimit = 10;
+        let allReviews = [];
 
         async function loadReviews() {
             try {
@@ -640,7 +635,9 @@
                     name: doc.name,
                     text: doc.text,
                     date: doc.date,
-                    isHaraj: doc.isHaraj !== false
+                    isHaraj: doc.isHaraj !== false,
+                    isLocal: doc.isHaraj === false,
+                    phone: doc.phone
                 }));
 
                 renderReviews(allReviews);
@@ -919,14 +916,12 @@
 
         // Init
         window.onload = () => {
-            loadGallery();
             loadReviews();
         };
 
         // Listen for storage changes from other tabs to update instantly
         window.addEventListener('storage', (e) => {
             if (['site_reviews', 'deleted_reviews', 'edited_reviews', 'admin_photos', 'deleted_photos'].includes(e.key)) {
-                loadGallery();
                 loadReviews();
             }
         });
