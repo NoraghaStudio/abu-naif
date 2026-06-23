@@ -406,18 +406,7 @@
 
 <body>
 
-    <div id="loginOverlay">
-        <div class="login-box">
-            <img src="assets/images/logo-ar.webp" alt="أبو نايف لفحص السيارات"
-                style="height: 60px; margin-bottom: 1rem;">
-            <h2 style="color: var(--gold); margin-bottom: 1rem;">لوحة التحكم</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 2rem;">الرجاء إدخال كلمة المرور للوصول</p>
-            <input type="password" id="adminPassword" class="form-control" placeholder="كلمة المرور..."
-                style="margin-bottom: 1rem; text-align: center;" onkeypress="if(event.key === 'Enter') checkPassword()">
-            <button class="btn" style="width: 100%;" onclick="checkPassword()">تسجيل الدخول</button>
-            <p id="loginError" style="color: var(--danger); margin-top: 1rem; display: none;">كلمة المرور غير صحيحة!</p>
-        </div>
-    </div>
+
 
     <aside class="sidebar">
         <div class="logo" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -438,15 +427,7 @@
             </svg>
             إدارة التقييمات
         </div>
-        <div class="nav-item" onclick="switchTab('settings')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path
-                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-                </path>
-            </svg>
-            الإعدادات
-        </div>
+
 
         <div style="margin-top: auto;">
             <a href="index.html" class="view-site-link" target="_blank">عرض الموقع المباشر ↗</a>
@@ -504,39 +485,7 @@
             </div>
         </section>
 
-        <!-- Settings Section -->
-        <section id="settings" class="section">
-            <div class="header">
-                <div>
-                    <h1>إعدادات لوحة التحكم</h1>
-                    <p style="color: var(--text-secondary);">يمكنك تغيير كلمة المرور هنا لحماية حسابك.</p>
-                </div>
-            </div>
-
-            <div class="settings-card">
-                <h3 style="color: var(--gold); margin-bottom: 1.5rem;">تغيير كلمة المرور</h3>
-
-                <div class="form-group">
-                    <label>كلمة المرور الحالية</label>
-                    <input type="password" id="oldPassword" class="form-control" placeholder="أدخل كلمة المرور القديمة">
-                </div>
-
-                <div class="form-group">
-                    <label>كلمة المرور الجديدة</label>
-                    <input type="password" id="newPassword" class="form-control" placeholder="أدخل كلمة المرور الجديدة">
-                </div>
-
-                <div class="form-group">
-                    <label>تأكيد كلمة المرور الجديدة</label>
-                    <input type="password" id="confirmNewPassword" class="form-control"
-                        placeholder="أعد إدخال كلمة المرور الجديدة">
-                </div>
-
-                <button class="btn" style="width: 100%;" onclick="changePassword()">حفظ كلمة المرور الجديدة</button>
-                <p id="passwordChangeStatus"
-                    style="margin-top: 1rem; text-align: center; display: none; font-weight: bold;"></p>
-            </div>
-        </section>
+>
 
     </main>
 
@@ -675,93 +624,7 @@
 
 
     <script>
-        // --- Authentication ---
-        const ADMIN_PASSWORD = "8f$WzZ8G5Ox\\"; // يمكنك تغيير كلمة المرور من هنا
 
-        function checkPassword() {
-            const errorElem = document.getElementById('loginError');
-            const lockoutUntil = parseInt(localStorage.getItem('adminLockoutUntil') || '0');
-            const now = Date.now();
-
-            if (lockoutUntil > now) {
-                errorElem.textContent = "تم قفل الحساب مؤقتاً لكثرة المحاولات الخاطئة.";
-                errorElem.style.display = 'block';
-                return;
-            }
-
-            // Clear old lockout
-            if (lockoutUntil && lockoutUntil <= now) {
-                localStorage.removeItem('adminLoginAttempts');
-                localStorage.removeItem('adminLockoutUntil');
-            }
-
-            const input = document.getElementById('adminPassword').value;
-            let attempts = parseInt(localStorage.getItem('adminLoginAttempts') || '0');
-
-            const currentPassword = localStorage.getItem('customAdminPassword') || ADMIN_PASSWORD;
-
-            if (input === currentPassword) {
-                localStorage.removeItem('adminLoginAttempts');
-                sessionStorage.setItem('isAdminAuth', 'true');
-                sessionStorage.setItem('lastAdminActivity', Date.now().toString());
-                document.getElementById('loginOverlay').style.display = 'none';
-            } else {
-                attempts++;
-                localStorage.setItem('adminLoginAttempts', attempts);
-
-                if (attempts >= 3) {
-                    localStorage.setItem('adminLockoutUntil', (now + 3600000).toString()); // 1 hour
-                    errorElem.textContent = "تم قفل الحساب مؤقتاً لكثرة المحاولات الخاطئة.";
-                } else {
-                    errorElem.textContent = "كلمة المرور غير صحيحة!";
-                }
-                errorElem.style.display = 'block';
-            }
-        }
-        // Idle Auto-Logout Logic
-        function checkAuthStatus() {
-            if (sessionStorage.getItem('isAdminAuth') === 'true') {
-                const lastActivity = parseInt(sessionStorage.getItem('lastAdminActivity') || '0');
-                const now = Date.now();
-                const idleLimit = 10 * 60 * 1000; // 10 minutes
-
-                if (now - lastActivity > idleLimit) {
-                    sessionStorage.removeItem('isAdminAuth');
-                    sessionStorage.removeItem('lastAdminActivity');
-                    document.getElementById('loginOverlay').style.display = 'flex';
-                    document.getElementById('adminPassword').value = '';
-                } else {
-                    document.getElementById('loginOverlay').style.display = 'none';
-                }
-            }
-        }
-
-        checkAuthStatus();
-
-        // Track user activity
-        function resetIdleTimer() {
-            if (sessionStorage.getItem('isAdminAuth') === 'true') {
-                sessionStorage.setItem('lastAdminActivity', Date.now().toString());
-            }
-        }
-
-        // Listen to various activity events
-        ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'].forEach(evt => {
-            document.addEventListener(evt, resetIdleTimer, true);
-        });
-
-        // Check idle time every 10 seconds
-        setInterval(checkAuthStatus, 10000);
-        // Run check on load to update UI if already locked out
-        window.addEventListener('DOMContentLoaded', () => {
-            const lockoutUntil = parseInt(localStorage.getItem('adminLockoutUntil') || '0');
-            if (lockoutUntil > Date.now()) {
-                const errorElem = document.getElementById('loginError');
-                errorElem.textContent = "تم قفل الحساب مؤقتاً لكثرة المحاولات الخاطئة.";
-                errorElem.style.display = 'block';
-                document.getElementById('adminPassword').disabled = true;
-            }
-        });
 
         // Utilities
         function generateId(name, text) {
@@ -1169,45 +1032,7 @@
             btn.innerText = "إضافة التقييم";
         }
 
-        function changePassword() {
-            const oldPassInput = document.getElementById('oldPassword').value;
-            const newPassInput = document.getElementById('newPassword').value;
-            const confirmNewPassInput = document.getElementById('confirmNewPassword').value;
-            const statusElem = document.getElementById('passwordChangeStatus');
 
-            const currentPassword = localStorage.getItem('customAdminPassword') || ADMIN_PASSWORD;
-
-            if (oldPassInput !== currentPassword) {
-                statusElem.textContent = "كلمة المرور الحالية غير صحيحة!";
-                statusElem.style.color = "var(--danger)";
-                statusElem.style.display = 'block';
-                return;
-            }
-
-            if (!newPassInput) {
-                statusElem.textContent = "يرجى إدخال كلمة المرور الجديدة!";
-                statusElem.style.color = "var(--danger)";
-                statusElem.style.display = 'block';
-                return;
-            }
-
-            if (newPassInput !== confirmNewPassInput) {
-                statusElem.textContent = "كلمات المرور الجديدة غير متطابقة!";
-                statusElem.style.color = "var(--danger)";
-                statusElem.style.display = 'block';
-                return;
-            }
-
-            localStorage.setItem('customAdminPassword', newPassInput);
-            statusElem.textContent = "تم تغيير كلمة المرور بنجاح!";
-            statusElem.style.color = "#4caf50";
-            statusElem.style.display = 'block';
-
-            // Clear inputs
-            document.getElementById('oldPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmNewPassword').value = '';
-        }
 
         // Init
         window.onload = () => {
