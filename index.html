@@ -400,7 +400,7 @@
                         const oldReviews = await jsonRes.json();
                         
                         // Default Worker URL (Update this when you deploy your Cloudflare worker)
-                        const workerUrl = 'https://abu-naif-reviews.your-domain.workers.dev/api/reviews';
+                        const workerUrl = '/api/reviews';
                         let newReviews = [];
                         try {
                             const apiRes = await fetch(workerUrl);
@@ -900,7 +900,7 @@
             
             try {
                 // Default Worker URL (Update this when you deploy your Cloudflare worker)
-                const workerUrl = 'https://abu-naif-reviews.your-domain.workers.dev/api/reviews';
+                const workerUrl = '/api/reviews';
                 
                 const response = await fetch(workerUrl, {
                     method: 'POST',
