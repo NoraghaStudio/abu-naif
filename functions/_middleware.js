@@ -7,7 +7,7 @@ export async function onRequest(context) {
     // The expected credentials
     // Users can override these via Cloudflare Pages Environment Variables
     const expectedUser = env.ADMIN_USER || "admin";
-    const expectedPass = env.ADMIN_PASS || "8f$WzZ8G5Ox\\";
+    const expectedPass = env.ADMIN_PASS || "1Z4'[]40uSpq";
 
     // Read the "Authorization" header
     const authHeader = request.headers.get("Authorization");
