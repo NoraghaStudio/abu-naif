@@ -424,7 +424,7 @@
                     const loadMoreBtn = document.getElementById('load-more-reviews');
                     const loadMoreOtherBtn = document.getElementById('load-more-other-reviews');
                     
-                    let harajReviews = reviews.filter(r => r.isHaraj !== false).slice(0, 200);
+                    let harajReviews = reviews.filter(r => r.isHaraj !== false);
                     let localReviews = reviews.filter(r => r.isHaraj === false);
 
                     let harajCurrentIndex = 0;
