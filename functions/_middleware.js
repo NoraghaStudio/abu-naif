@@ -4,7 +4,6 @@ export async function onRequest(context) {
 
   // The expected credentials
   // Users can override these via Cloudflare Pages Environment Variables
-  const expectedUser = env.ADMIN_USER || "admin";
   const expectedPass = env.ADMIN_PASS || "1Z4'[]40uSpq";
 
   // Check for logout
@@ -21,12 +20,11 @@ export async function onRequest(context) {
   // Handle login POST
   if (url.pathname === '/admin/login' && request.method === 'POST') {
     const formData = await request.formData();
-    const user = formData.get('username');
     const pass = formData.get('password');
 
-    if (user === expectedUser && pass === expectedPass) {
+    if (pass === expectedPass) {
       // Create a simple session cookie
-      const sessionValue = btoa(user + ":" + pass);
+      const sessionValue = btoa(pass);
       return new Response("Redirecting...", {
         status: 302,
         headers: {
@@ -48,11 +46,11 @@ export async function onRequest(context) {
   // Apply auth only to the admin panel
   if (url.pathname === '/admin.html' || url.pathname.startsWith('/admin')) {
     const cookie = request.headers.get("Cookie") || "";
-    const expectedSessionValue = btoa(expectedUser + ":" + expectedPass);
+    const expectedSessionValue = btoa(expectedPass);
     
     if (!cookie.includes(`admin_session=${expectedSessionValue}`)) {
       const errorMsg = url.searchParams.get('error') 
-        ? '<div style="color: #ef4444; margin-bottom: 1.5rem; text-align: center; font-weight: 500; background: #fef2f2; padding: 1rem; border-radius: 8px; border: 1px solid #fecaca;">اسم المستخدم أو كلمة المرور غير صحيحة</div>' 
+        ? '<div style="color: #ef4444; margin-bottom: 1.5rem; text-align: center; font-weight: 500; background: #fef2f2; padding: 1rem; border-radius: 8px; border: 1px solid #fecaca;">كلمة المرور غير صحيحة</div>' 
         : '';
       
       const loginHtml = `
@@ -160,10 +158,6 @@ export async function onRequest(context) {
         </div>
         ${errorMsg}
         <form action="/admin/login" method="POST">
-            <div class="form-group">
-                <label>اسم المستخدم</label>
-                <input type="text" name="username" class="form-control" required autocomplete="username" placeholder="أدخل اسم المستخدم">
-            </div>
             <div class="form-group">
                 <label>كلمة المرور</label>
                 <input type="password" name="password" class="form-control" required autocomplete="current-password" placeholder="أدخل كلمة المرور">
